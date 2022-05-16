@@ -6,7 +6,7 @@ connectDB();
 
 
 const app = express()
-const PORT = 5000
+const PORT = 5000;
 
 app.use(express.json())
 app.use("/api/auth", require("./auth/route"))
@@ -14,7 +14,7 @@ app.use("/api/auth", require("./auth/route"))
 
 
 const server = app.listen(PORT, () =>
-  console.log(`Server Connected to port ${PORT}`)
+  console.log(`Server Connected to port for branch test ${PORT}`)
 )
 // Handling Error
 process.on("unhandledRejection", err => {
