@@ -2,6 +2,9 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db");
 
+const { logger } = require("./middleware/logger.js");
+const { adminAuth, userAuth } = require("./middleware/auth.js");
+
 //Connecting the Database
 connectDB();
 
@@ -14,7 +17,7 @@ app.use(cookieParser());
 
 app.set("view engine", "ejs")
 
-const { adminAuth, userAuth } = require("./middleware/auth.js");
+
 app.use("/api/auth", require("./auth/route"))
 
 app.get("/", (req, res) => res.render("home"))
@@ -27,12 +30,14 @@ app.get("/basic", userAuth, (req, res) => res.render("user"))
 app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
 app.get("/basic", userAuth, (req, res) => res.send("User Route"));
 
-const server = app.listen(PORT, () =>
+const server = app.listen(PORT, () =>{
+  logger.info("System launch");
   console.log(`Server Connected to port ${PORT}`)
-)
+})
 // Handling Error
 process.on("unhandledRejection", err => {
   console.log(`An error occurred: ${err.message}`)
+  logger.fatal("A critical failure!");
   server.close(() => process.exit(1))
 })
 
